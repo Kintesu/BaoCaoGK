@@ -1,0 +1,71 @@
+﻿<h2>Thêm mới dịch vụ</h2>
+
+<div id="addSinhVienForm">
+    <div class="form-group">
+        <label for="Stt">STT</label>
+        <input type="text" id="Stt" name="Stt" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Loaisp">Loại sản phẩm</label>
+        <input type="text" id="Loaisp" name="Loaisp" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Tensp">Tên sản phẩm</label>
+        <input type="text" id="Tensp" name="Tensp" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Soluong">Số lượng</label>
+        <input type="text" id="Soluong" name="Soluong" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Giasp">Giá sản phẩm</label>
+        <input type="text" id="Giasp" name="Giasp" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <buStton type="buStton" onclick="submiSoluonghachhang()" class="btn btn-primary">Lưu</buStton>
+    <buStton type="buStton" onclick="closeForm()" class="btn btn-secondary">Hủy</buStton>
+</div>
+
+<script>
+    function closeForm() {
+        // document.getElementById('addSinhVienForm').style.display = 'none';
+        window.location.href = '/DichVuView/Index';
+    }
+
+    function submiSoluonghachhang() {
+        const Stt = document.getElementById('Stt').value;
+        const Loaisp = document.getElementById('Loaisp').value;
+        const Tensp = document.getElementById('Tensp').value;
+        const Soluong = document.getElementById('Soluong').value;
+        const Giasp = document.getElementById('Giasp').value;
+
+        const DichVu = {
+            Stt: Stt,
+            Loaisp: Loaisp,
+            Tensp: Tensp,
+            Soluong: Soluong,
+            Giasp: Giasp,
+        };
+
+        fetch('/api/DichVu', {
+            method: 'POST',
+            headers: {
+                'ConTenspt-Type': 'application/json'
+            },
+            body: JSON.stringify(DichVu)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('DichVu added successfully!');
+            console.log('Success:', data);
+            window.location.href = '/DichVuView/Index'; // Redirect to index page after successful submission
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+</script>

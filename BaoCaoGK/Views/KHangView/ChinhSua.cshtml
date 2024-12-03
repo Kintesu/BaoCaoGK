@@ -1,0 +1,75 @@
+﻿<h2>Thông tin Khách Hàng</h2>
+
+<div id="addSinhVienForm">
+    <div class="form-group">
+        <label for="Tt">TT</label>
+        <input type="text" id="Tt" name="Tt" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Hodem">Họ đệm</label>
+        <input type="text" id="Hodem" name="Hodem" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Ten">Tên</label>
+        <input type="text" id="Ten" name="Ten" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Tk">Tài khoản</label>
+        <input type="text" id="Tk" name="Tk" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Mk">Mật khẩu</label>
+        <input type="text" id="Mk" name="Mk" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Sogio">Số giờ</label>
+        <input type="text" id="Sogio" name="Sogio" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <button type="button" onclick="submitKhachhang()" class="btn btn-primary">Lưu</button>
+    <button type="button" onclick="closeForm()" class="btn btn-secondary">Hủy</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const pathArray = window.location.pathname.split('/');
+        //const tt = pathArray[pathArray.length - 1];
+        const tt = pathArray.pop();
+
+        // Check if 'tt' is correctly retrieved
+        if (!tt) {
+            console.error('Error: Missing or invalid "tt" parameter in URL');
+            return;
+        }
+
+        fetch(`/api/kh/${tt}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('Tt').value = data.Tt;
+                document.getElementById('Hodem').value = data.Hodem;
+                document.getElementById('Ten').value = data.Ten;
+                document.getElementById('Tk').value = data.Tk;
+                document.getElementById('Mk').value = data.Mk;
+                document.getElementById('Sogio').value = data.Sogio;
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+</script>

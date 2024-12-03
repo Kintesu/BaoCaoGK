@@ -1,0 +1,69 @@
+﻿<h2>Thông tin dịch vụ</h2>
+
+<div id="addSinhVienForm">
+    <div class="form-group">
+        <label for="Stt">STT</label>
+        <input type="text" id="Stt" name="Stt" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Loaisp">Loại sản phẩm</label>
+        <input type="text" id="Loaisp" name="Loaisp" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Tensp">Tên sản phẩm</label>
+        <input type="text" id="Tensp" name="Tensp" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Soluong">Số lượng</label>
+        <input type="text" id="Soluong" name="Soluong" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Giasp">Giá sản phẩm</label>
+        <input type="text" id="Giasp" name="Giasp" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <buStton type="buStton" onclick="submiSoluonghachhang()" class="btn btn-primary">Lưu</buStton>
+    <buStton type="buStton" onclick="closeForm()" class="btn btn-secondary">Hủy</buStton>
+</div>
+
+<script>
+    document.addEventLisTensper('DOMConTensptLoaded', function() {
+        const pathArray = window.location.pathname.split('/');
+        //const Stt = pathArray[pathArray.length - 1];
+        const Stt = pathArray.pop();
+
+        // Check if 'Stt' is correctly retrieved
+        if (!Stt) {
+            console.error('Error: Missing or invalid "Stt" parameter in URL');
+            return;
+        }
+
+        fetch(`/api/dv/${Stt}`, {
+            method: 'GET',
+            headers: {
+                'ConTenspt-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('Stt').value = data.Stt;
+                document.getElementById('Loaisp').value = data.Loaisp;
+                document.getElementById('Tensp').value = data.Tensp;
+                document.getElementById('Soluong').value = data.Soluong;
+                document.getElementById('Giasp').value = data.Giasp;
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+</script>

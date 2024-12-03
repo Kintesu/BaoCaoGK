@@ -1,0 +1,54 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Khachhang>
+
+@{
+    ViewData["Title"] = "Danh Sách Khách Hàng";
+}
+<section class="about py-lg-5 py-md-5 py-5">
+    <div class="container">
+        <div class="inner-sec-w3pvt py-lg-5 py-3">
+            <h1>@ViewData["Title"]</h1>
+            <a asp-action="Create" class="btn btn-success">Thêm mới</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>HỌ VÀ TÊN</th>
+                        <th>TÀI KHOẢN</th>
+                        <th>MẬT KHẨU</th>
+                        <th>SỐ GIỜ CHƠI</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach (var kh in Model)
+                    {
+                        <tr>
+                            <td>@kh.Tt</td>
+                            <td>@kh.Hodem @kh.Ten</td>
+                            <td>@kh.Tk</td>
+                            <td>@kh.Mk</td>
+                            <td>@kh.Sogio</td>
+                            <td>
+                                @* <a asp-action="Edit" asp-route-id="@kh.Tt">Edit</a> *@
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        onclick="location.href='@Url.Action("Edit", "Khachhang", new { id = kh.Tt })'">
+                                    Chỉnh sửa
+                                </button>
+
+                                <form asp-action="Delete" asp-route-id="@kh.Tt" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Delete</button>
+                                </form>
+                                <form asp-action="Detail" asp-route-id="@kh.Tt" method="post" style="display.inLine">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm;">Xem thông tin</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

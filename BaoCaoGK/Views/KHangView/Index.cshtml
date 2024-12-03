@@ -1,0 +1,244 @@
+﻿@* <h2>Danh sách khách hàng</h2>
+
+<div>
+    <button class="btn btn-success btn-sm" id="khach-hang-add">Thêm mới</button>
+</div>
+<div>
+    <button class="btn btn-success btn-sm" id="khach-hang-sort" onclick="sort_asc()">Sắp xếp</button>
+</div>
+<div id="khach-hang-list">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Họ đệm</th>
+                <th>Tên</th>
+                <th>Tài khoản</th>
+                <th>Mật khẩu</th>
+                <th>Số giờ chơi</th>
+            </tr>
+        </thead>
+        <tbody id="khach-hang-list-body"></tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    let dskh;
+
+    fetch('/api/KHang')
+        .then(response => response.json())
+        .then(data => {
+            dskh = data;
+            const khachhangListContainer = document.getElementById('khach-hang-list-body');
+            khachhangListContainer.innerHTML = '';
+
+            data.forEach(Khachhang => {
+                const KhachhangItem = document.createElement('tr');
+                KhachhangItem.innerHTML = `
+                        <td>${Khachhang.Tt}</td>
+                        <td>${Khachhang.Hodem}</td>
+                        <td>${Khachhang.Ten}</td>
+                        <td>${Khachhang.Tk}</td>
+                        <td>${Khachhang.Mk}</td>
+                        <td>${Khachhang.Sogio}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="viewDetail(${Khachhang.Tt})">Xem chi tiết</button>
+                            <button class="btn btn-warning btn-sm" onclick="editKHang(${Khachhang.Tt})">Chỉnh sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteKHang(${Khachhang.Tt})">Xóa</button>
+                        </td>
+                        `;
+                KhachhangListContainer.appendChild(KhachhangItem);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+
+    document.getElementById('khach-hang-add').addEventListener('click',
+        function () {
+            window.location.href = '/KHangView/Create/';
+        });
+
+    function viewDetail(tt) {
+        window.location.href = `/KHangView/GetAll/${tt}`;
+    }
+
+    function editKHang(tt) {
+        window.location.href = `/KHangView/Edit/${tt}`;
+    }
+
+    function deleteKHang(tt) {
+        if (confirm('Bạn có chắc chắn muốn xóa tài khoản này?')) {
+            fetch(`/api/kh/${tt}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Delete successful') {
+                        alert('Khách hàng đã được xóa thành công!');
+                        window.location.href = '/KHangView/Index';
+                    } else {
+                        alert('Không thể xóa khách hàng này. ' + data.error);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
+
+    function sort_asc() {
+        dskh.sort((a, b) => (a.Ten > b.Ten ? 1 : -1));
+        console.log(dskh);
+
+        $("#khach-hang-list-body").empty();
+
+        const KhachhangListSort = document.getElementById('khach-hang-list-body');
+        KhachhangListSort.innerHTML = '';
+
+        dskh.forEach(Khachhang => {
+            const KhachhangItem = document.createElement('tr');
+            KhachhangItem.innerHTML = `
+                            <td>${Khachhang.Tt}</td>
+                            <td>${Khachhang.Hodem}</td>
+                            <td>${Khachhang.Ten}</td>
+                            <td>${Khachhang.Tk}</td>
+                            <td>${Khachhang.Mk}</td>
+                            <td>${Khachhang.Sogio}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="viewDetail(${Khachhang.Tt})">Xem chi tiết</button>
+                                <button class="btn btn-warning btn-sm" onclick="editKHang(${Khachhang.Tt})">Chỉnh sửa</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteKHang(${Khachhang.Tt})">Xóa</button>
+                            </td>
+                            `;
+            KhachhangListSort.appendChild(KhachhangItem);
+        });
+    }
+</script> *@
+
+
+
+
+<h2>Danh sách khách hàng</h2>
+
+<div>
+    <button class="btn btn-success btn-sm" id="khach-hang-add">Thêm mới</button>
+</div>
+<div>
+    <button class="btn btn-success btn-sm" id="khach-hang-sort" onclick="sort_asc()">Sắp xếp</button>
+</div>
+<div id="khach-hang-list">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Họ đệm</th>
+                <th>Tên</th>
+                <th>Tài khoản</th>
+                <th>Mật khẩu</th>
+                <th>Số giờ chơi</th>
+            </tr>
+        </thead>
+        <tbody id="khach-hang-list-body"></tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    let dskh;
+
+    fetch('/api/KHang')
+        .then(response => response.json())
+        .then(data => {
+            dskh = data;
+            const khachHangListContainer = document.getElementById('khach-hang-list-body');
+            khachHangListContainer.innerHTML = '';
+
+            data.forEach(khachHang => {
+                const khachHangItem = document.createElement('tr');
+                khachHangItem.innerHTML = `
+                        <td>${khachHang.Tt}</td>
+                        <td>${khachHang.Hodem}</td>
+                        <td>${khachHang.Ten}</td>
+                        <td>${khachHang.Tk}</td>
+                        <td>${khachHang.Mk}</td>
+                        <td>${khachHang.Sogio}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="viewDetail(${khachHang.Tt})">Xem chi tiết</button>
+                            <button class="btn btn-warning btn-sm" onclick="editKHang(${khachHang.Tt})">Chỉnh sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteKHang(${khachHang.Tt})">Xóa</button>
+                        </td>
+                        `;
+                khachHangListContainer.appendChild(khachHangItem);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+
+    document.getElementById('khach-hang-add').addEventListener('click',
+        function () {
+            window.location.href = '/KHangView/ThemMoi';
+        });
+
+    function viewDetail(tt) {
+        window.location.href = `/KHangView/ChiTiet/${tt}`;
+    }
+
+    function editKHang(tt) {
+        window.location.href = `/KHangView/ChinhSua/${tt}`;
+    }
+
+    function deleteKHang(tt) {
+        if (confirm('Bạn có chắc chắn muốn xóa khách hàng này?')) {
+            fetch(`/api/KHang/${tt}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Delete successful') {
+                        alert('Khách hàng đã được xóa thành công!');
+                        window.location.href = '/KHangView/Index';
+                    } else {
+                        alert('Không thể xóa khách hàng này. ' + data.error);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
+
+    function sort_asc() {
+        dskh.sort((a, b) => (a.Ten > b.Ten ? 1 : -1));
+        console.log(dskh);
+
+        $("#khach-hang-list-body").empty();
+
+        const khachHangListSort = document.getElementById('khach-hang-list-body');
+        khachHangListSort.innerHTML = '';
+
+        dskh.forEach(khachHang => {
+            const khachHangItem = document.createElement('tr');
+            khachHangItem.innerHTML = `
+                            <td>${khachHang.Tt}</td>
+                            <td>${khachHang.Hodem}</td>
+                            <td>${khachHang.Ten}</td>
+                            <td>${khachHang.Tk}</td>
+                            <td>${khachHang.Mk}</td>
+                            <td>${khachHang.Sogio}</td>
+                           <td>
+                                <button class="btn btn-info btn-sm" onclick="viewDetail(${khachHang.Tt})">Xem chi tiết</button>
+                                <button class="btn btn-warning btn-sm" onclick="editKHang(${khachHang.Tt})">Chỉnh sửa</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteKHang(${khachHang.Tt})">Xóa</button>
+                            </td>
+                            `;
+            khachHangListSort.appendChild(khachHangItem);
+        });
+    }
+</script>

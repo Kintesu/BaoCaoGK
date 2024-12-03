@@ -1,0 +1,117 @@
+﻿<h2>Danh sách dịch vụ</h2>
+
+<div>
+    <button class="btn btn-success btn-sm" id="dich-vu-add">Thêm mới</button>
+</div>
+<div>
+    <button class="btn btn-success btn-sm" id="dich-vu-sort" onclick="sort_asc()">Sắp xếp</button>
+</div>
+<div id="dich-vu-list">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Loại sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá sản phẩm</th>
+            </tr>
+        </thead>
+        <tbody id="dich-vu-list-body"></tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    let dsdv;
+
+    fetch('/api/DichVu')
+        .then(response => response.json())
+        .then(data => {
+            dsdv = data;
+            const dichvuListContainer = document.getElementById('dich-vu-list-body');
+            dichvuListContainer.innerHTML = '';
+
+            data.forEach(dichvu => {
+                const dichvuItem = document.createElement('tr');
+                dichvuItem.innerHTML = `
+                        <td>${dichvu.Stt}</td>
+                        <td>${dichvu.Loaisp}</td>
+                        <td>${dichvu.Tensp}</td>
+                        <td>${dichvu.Soluong}</td>
+                        <td>${dichvu.Giasp}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="viewDetail(${dichvu.Stt})">Xem chi tiết</button>
+                            <button class="btn btn-warning btn-sm" onclick="editDichVu(${dichvu.Stt})">Chỉnh sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteDichVu(${dichvu.Stt})">Xóa</button>
+                        </td>
+                        `;
+                dichvuListContainer.appendChild(dichvuItem);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+
+    document.getElementById('dich-vu-add').addEventListener('click',
+        function () {
+            window.location.href = '/DichVuView/ThemMoi';
+        });
+
+    function viewDetail(tt) {
+        window.location.href = `/DichVuView/ChiTiet/${tt}`;
+    }
+
+    function editDichVu(tt) {
+        window.location.href = `/DichVuView/ChinhSua/${tt}`;
+    }
+
+    function deleteDichVu(tt) {
+        if (confirm('Bạn có chắc chắn muốn xóa dvách hàng này?')) {
+            fetch(`/api/DichVu/${tt}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Delete successful') {
+                        alert('dịch vụ đã được xóa thành công!');
+                        window.location.href = '/DichVuView/Index';
+                    } else {
+                        alert('dvông thể xóa dvách hàng này. ' + data.error);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
+
+    function sort_asc() {
+        dsdv.sort((a, b) => (a.Ten > b.Ten ? 1 : -1));
+        console.log(dsdv);
+
+        $("#dich-vu-list-body").empty();
+
+        const dichvuListSort = document.getElementById('dich-vu-list-body');
+        dichvuListSort.innerHTML = '';
+
+        dsdv.forEach(dichvu => {
+            const dichvuItem = document.createElement('tr');
+            dichvuItem.innerHTML = `
+                            <td>${dichvu.Stt}</td>
+                            <td>${dichvu.Loaisp}</td>
+                            <td>${dichvu.Tensp}</td>
+                            <td>${dichvu.Soluong}</td>
+                            <td>${dichvu.Giasp}</td>
+                           <td>
+                                <button class="btn btn-info btn-sm" onclick="viewDetail(${dichvu.Stt})">Xem chi tiết</button>
+                                <button class="btn btn-warning btn-sm" onclick="editDichVu(${dichvu.Stt})">Chỉnh sửa</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteDichVu(${dichvu.Stt})">Xóa</button>
+                            </td>
+                            `;
+            dichvuListSort.appendChild(dichvuItem);
+        });
+    }
+</script>

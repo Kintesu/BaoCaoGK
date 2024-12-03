@@ -1,0 +1,78 @@
+﻿<h2>Thêm mới Khách Hàng</h2>
+
+<div id="addSinhVienForm">
+    <div class="form-group">
+        <label for="Tt">TT</label>
+        <input type="text" id="Tt" name="Tt" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Hodem">Họ đệm</label>
+        <input type="text" id="Hodem" name="Hodem" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Ten">Tên</label>
+        <input type="text" id="Ten" name="Ten" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Tk">Tài khoản</label>
+        <input type="text" id="Tk" name="Tk" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Mk">Mật khẩu</label>
+        <input type="text" id="Mk" name="Mk" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Sogio">Số giờ</label>
+        <input type="text" id="Sogio" name="Sogio" class="form-control" required>
+        <span class="text-danger"></span>
+    </div>
+    <button type="button" onclick="submitKhachhang()" class="btn btn-primary">Lưu</button>
+    <button type="button" onclick="closeForm()" class="btn btn-secondary">Hủy</button>
+</div>
+
+<script>
+    function closeForm() {
+        // document.getElementById('addSinhVienForm').style.display = 'none';
+        window.location.href = '/KHView/Index';
+    }
+
+    function submitKhachhang() {
+        const tt = document.getElementById('Tt').value;
+        const hodem = document.getElementById('Hodem').value;
+        const ten = document.getElementById('Ten').value;
+        const tk = document.getElementById('Tk').value;
+        const mk = document.getElementById('Mk').value;
+        const sogio = document.getElementById('Sogio').value;
+
+        const kh = {
+            Tt: tt,
+            Hodem: hodem,
+            Ten: ten,
+            tk: tk,
+            Mk: mk,
+            Sogio: parseFloat(sogio)
+        };
+
+        fetch('/api/KHang', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(kh)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Khachhang added successfully!');
+            console.log('Success:', data);
+            window.location.href = '/KHangView/Index'; // Redirect to index page after successful submission
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+</script>

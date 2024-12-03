@@ -1,0 +1,47 @@
+﻿@model Khachhang
+
+@{
+    ViewData["Title"] = "Thêm thông tin khách hàng";
+}
+
+
+<section class="about py-lg-5 py-md-5 py-5">
+    <div class="container">
+        <div class="inner-sec-w3pvt py-lg-5 py-3">
+
+            <h1>@ViewData["Title"]</h1>
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="Tt" />
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label>Họ đệm</label>
+                        <input asp-for="Hodem" class="form-control" />
+                        <span asp-validation-for="Hodem" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label>Tên</label>
+                        <input asp-for="Ten" class="form-control" />
+                        <span asp-validation-for="Ten" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label>Tài khoản</label>
+                        <input asp-for="Tk" class="form-control" />
+                        <span asp-validation-for="Tk" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label>Mật khẩu</label>
+                        <input asp-for="Mk" class="form-control" />
+                        <span asp-validation-for="Mk" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label>Số giờ chơi</label>
+                        <input asp-for="Sogio" class="form-control" />
+                        <span asp-validation-for="Sogio" class="text-danger"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</section>
